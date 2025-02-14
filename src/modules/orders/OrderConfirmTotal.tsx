@@ -1,18 +1,15 @@
-import { ProductContext } from "@/providers/ProductsProvider";
-import React, { useContext, useMemo } from "react";
+'use client'
+import { Product } from "@/interfaces/interfaces";
+import { useGetProductsIncart } from "./hooks/useGetProductsIncart";
+import OrderForm from "./OrderForm";
 
-export const OrderConfirmTotal = () => {
-  const { state } = useContext(ProductContext);
+export const OrderConfirmTotal = ({ products }: { products: Product[] }) => {
 
-  const getTotal = useMemo(() => {
-    const total = Object.values(state.productsInCart).reduce((acc, value) => {
-      acc += value.quantity * value.price;
-      return acc;
-    }, 0);
-    return total;
-  }, [state.productsInCart]);
+  const {getTotal} = useGetProductsIncart(products)
+
   return (
     <div className="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3 ">
+      <OrderForm isOpen onClose={() => {}} />
       <div className="flex justify-between text-2xl">
         <p className="font-bold">Total</p>
         <div className="">

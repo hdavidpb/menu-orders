@@ -3,11 +3,11 @@
 import { ProductContext } from "@/providers/ProductsProvider";
 import { useContext, useEffect } from "react";
 
-export const AddButton = ({ image, name,price }: { image: string; name: string,price:number }) => {
+export const AddButton = ({ image, name }: { image: string; name: string }) => {
   const { state, dispatch } = useContext(ProductContext);
 
   const handleAddToCart = () => {
-    dispatch({ type: "ADD_PRODUCT", payload: { image,name,price} });
+    dispatch({ type: "ADD_PRODUCT", payload: { image,name} });
   };
 
 useEffect(()=>{

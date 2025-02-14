@@ -10,6 +10,7 @@ import { ProductContext } from "@/providers/ProductsProvider";
 
     useEffect(()=>{
         if(state.products.length === 0) dispatch({type:"GET_SERVER_PRODUCTS",payload:products})
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
   return (

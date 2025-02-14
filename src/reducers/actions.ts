@@ -1,17 +1,21 @@
 'use client'
 import { ProductsInterface } from "@/providers/ProductsProvider";
 
-export const getProductsAfterToAdd = (state:ProductsInterface,payload:{ name: string; image: string ,price:number}):ProductsInterface=>{
+export const getProductsAfterToAdd = (state:ProductsInterface,payload:{ name: string; image: string }):ProductsInterface=>{
     const key = payload.name;
     if (state.productsInCart[key]) {
+      const newproductsInCart = {...state.productsInCart,[key]: { ...state.productsInCart[key], quantity: state.productsInCart[key].quantity + 1 }}
+      localStorage.setItem("cart",JSON.stringify(newproductsInCart))
       return {
-        ...state,productsInCart:{...state.productsInCart,[key]: { ...state.productsInCart[key], quantity: state.productsInCart[key].quantity + 1 }}
+        ...state,productsInCart:newproductsInCart
         ,
       };
     } else {
+      const newproductsInCart = { ...state.productsInCart,[key]: { image: payload.image, quantity: 1 }}
+      localStorage.setItem("cart",JSON.stringify(newproductsInCart))
       return {
         ...state,
-        productsInCart:{ ...state.productsInCart,[key]: { image: payload.image, quantity: 1 ,price:payload.price}}
+        productsInCart:newproductsInCart
        ,
       };
     }
@@ -20,12 +24,15 @@ export const getProductsAfterToAdd = (state:ProductsInterface,payload:{ name: st
 export const getProductsAfterRemove = (state:ProductsInterface,payload:string):ProductsInterface=>{
     const name = payload as string;
     if (state.productsInCart[name].quantity > 1) {
+    const newproductsInCart = {...state.productsInCart,[name]: { ...state.productsInCart[name], quantity: state.productsInCart[name].quantity - 1 }}
+      localStorage.setItem("cart",JSON.stringify(newproductsInCart))
       return {
-        ...state,productsInCart:{...state.productsInCart,[name]: { ...state.productsInCart[name], quantity: state.productsInCart[name].quantity - 1 }},
+        ...state,productsInCart:newproductsInCart,
       };
     } else {
         const newProducts = { ...state.productsInCart };
         delete newProducts[name];
+        localStorage.setItem("cart",JSON.stringify(newProducts))
        return {...state,productsInCart:newProducts}
     }
 }

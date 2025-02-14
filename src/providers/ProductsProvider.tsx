@@ -39,6 +39,11 @@ const ProductsProvider = ({children}:{children:React.ReactNode}) => {
       dispatch({type:"LOAD_FAVORITES",payload:storageFavorites})
     }, []);
 
+    useEffect(() => {
+      const storageCart = JSON.parse(localStorage.getItem("cart")!) || {}
+      dispatch({type:"LOAD_CART",payload:storageCart})
+    }, []);
+
 
   return (
     <ProductContext.Provider value={{state,dispatch}}>
