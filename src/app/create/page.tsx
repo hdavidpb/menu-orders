@@ -1,8 +1,5 @@
 import { createProductsAdapter } from "@/adapters/adapters";
-import { FilterButtons } from "@/modules/products/components/FilterButtons";
-import ProductsContainer from "@/modules/products/components/ProductsContainer";
-
-
+import { CreateProductForm } from "@/modules/products/components/CreateProductForm";
 const generateCatalogo = async () => {
   const URL = process.env.URL_API!;
   const catalogo = await fetch(URL, {
@@ -19,15 +16,13 @@ const generateCatalogo = async () => {
 
   return catalogo;
 };
-
-export default async function Home() {
-  const products = await generateCatalogo();
-
-
+const CreateOrderPage = async () => {
+    const products = await generateCatalogo();
   return (
-    <section className="w-full  flex flex-col justify-start items-start gap-3 p-4 overflow-y-auto">
-      <FilterButtons />
-      <ProductsContainer products={products} />
-    </section>
+    <div className="w-full md:h-screen flex flex-col justify-start items-center overflow-y-auto py-4 bg-gray-200">
+      <CreateProductForm products={products} />
+    </div>
   );
-}
+};
+
+export default CreateOrderPage;

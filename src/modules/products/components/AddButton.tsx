@@ -15,7 +15,7 @@ useEffect(()=>{
   return (
     <button
       style={{ flex: 1 }}
-      className="flex-1 h-full bg-indigo-500 py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md  transition-all hover:shadow-lg  focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none  rounded-lg"
+      className="  bg-indigo-500 h-full flex justify-center items-center text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md  transition-all hover:shadow-lg  focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none  rounded-lg"
       onClick={handleAddToCart}
       type="button"
     >

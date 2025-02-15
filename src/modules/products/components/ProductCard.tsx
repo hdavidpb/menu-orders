@@ -8,11 +8,12 @@ interface Props {
   nombre:string;
   precio:number;
   imagen:string;
+  descripción:string;
 }
 
-export const ProductCard =  ({ nombre,imagen }: Props) => {
+export const ProductCard =  ({ nombre,imagen,precio,descripción }: Props) => {
   return (
-    <div className="relative flex w-full max-w-[26rem]  flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg ">
+    <div className="relative flex w-full max-w-[26rem]  flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg pb-3">
       <div className="relative mx-4 mt-4 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40">
         <Image
           className="object-cover w-full aspect-square"
@@ -26,18 +27,19 @@ export const ProductCard =  ({ nombre,imagen }: Props) => {
        <FavoriteButton name={nombre}/>
 
       </div>
-      <div className="p-6">
-        <div className="mb-3 flex items-center justify-between">
+      <div className="p-6 flex-1">
+        <div className="flex items-center justify-between">
           <h5 className="capitalize block font-sans text-xl font-medium leading-snug tracking-normal text-blue-gray-900 antialiased">
-            {nombre}
+            {nombre.toLowerCase()}
           </h5>
         </div>
+        <span>${new Intl.NumberFormat("de-DE").format(precio)}</span>
         <p className="block font-sans text-base font-light leading-relaxed text-gray-700 antialiased">
-          Enter a freshly updated and thoughtfully furnished peaceful home
-          surrounded by ancient trees, stone walls, and open meadows.
+       {descripción}
         </p>
+   
       </div>
-      <div  className=" flex justify-start w-full gap-2 px-2 pb-4">
+      <div  className=" flex h-14 flex-col justify-end w-full gap-2 px-2 ">
         <AddButton name={nombre} image={imagen}  />
       </div>
     </div>

@@ -21,6 +21,7 @@ import { ProductContext } from "@/providers/ProductsProvider";
           nombre={product.nombre}
           precio={product.precio}
           imagen={product.imagen}
+          descripción={product.descripcion}
         />
       ))}
     </div>
