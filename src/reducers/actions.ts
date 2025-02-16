@@ -1,6 +1,7 @@
 'use client'
 import { ProductsInterface } from "@/providers/ProductsProvider";
 
+
 export const getProductsAfterToAdd = (state:ProductsInterface,payload:{ name: string; image: string }):ProductsInterface=>{
     const key = payload.name;
     if (state.productsInCart[key]) {
@@ -55,3 +56,4 @@ export const setFavorites = (state:ProductsInterface,payload:string):ProductsInt
 
   return { ...state,favoritesProducts:copyFavorites }
 }
+

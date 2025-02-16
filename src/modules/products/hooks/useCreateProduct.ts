@@ -1,27 +1,32 @@
 'use client'
 
 import { Product } from "@/interfaces/interfaces";
-import { encrypt } from "@/utils/encript";
+
+import { useRouter } from "next/navigation";
 import { useState, ChangeEvent, FormEvent, useMemo, useCallback, useEffect } from "react";
 import toast from "react-hot-toast";
 
 const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUD_NAME
 const PRESET_NAME = process.env.NEXT_PUBLIC_PRESET_NAME
 
-const initialValues = {nombre:"",tipo:"",precio:"",descripcion:"",imagen:""}
+const initialValues = {id:"",nombre:"",tipo:"",precio:"",descripcion:"",imagen:""}
 
 export enum ActionType  {
   "ADD_PRODUCT" = "agreagar producto",
-  "UPDATE_PRODUCT" = "actualizar producto"
+  "UPDATE_PRODUCT" = "actualizar producto",
+  "DELETE_PRODUCT" = "eliminar producto"
 }
 export const useCreateProduct = (products:Product[]) => {
 
     const [form, setForm] = useState(initialValues);
-    const [errors, setErrors] = useState({ nombre: "", tipo: "", precio: "", imagen:"" });
+    const [errors, setErrors] = useState({ nombre: "", tipo: "", precio: "", imagen:"" ,id:""});
     const [isLoading,setLoading] = useState(false)
     const [fileImage,setFileImage] = useState<File | undefined>(undefined);
     const [actionType,setActionType] = useState<ActionType>(ActionType.ADD_PRODUCT)
   
+    const router = useRouter()
+  
+
     const handleChange = (
       e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
@@ -42,9 +47,10 @@ export const useCreateProduct = (products:Product[]) => {
   
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      let data = []
+      let data = [];
+      let body = {}
      if( isInvalidForm()) return;
-  
+
       setLoading(true)
       if(form.imagen){
         data = [form.nombre,form.tipo,form.imagen,+form.precio,form.descripcion];
@@ -53,15 +59,18 @@ export const useCreateProduct = (products:Product[]) => {
         data = [form.nombre,form.tipo,imageUrl,+form.precio,form.descripcion];
 
       }
-  
-      const body = actionType === ActionType.ADD_PRODUCT ?  { data } : {id:form.nombre,data};
-  
-      //TODO: email provider auth.js ===>
-      const encriptedKey = encrypt("hernan.plazabs@gmail.com");
+      
+      if(actionType === ActionType.ADD_PRODUCT){
+        body = { data } 
+      }else if (actionType === ActionType.UPDATE_PRODUCT){
+        body = {id:form.id,data}
+      }else{
+        body = {toDelete:form.id}
+      }
+
       try {
         const productResponse = await fetch("/api/products", {
           method: "POST",
-          headers: { authorization: encriptedKey },
           body: JSON.stringify(body),
         });
         const response = await productResponse.json();
@@ -74,7 +83,7 @@ export const useCreateProduct = (products:Product[]) => {
         setLoading(false);
         setForm(initialValues)
         setFileImage(undefined);
-       if(actionType === ActionType.UPDATE_PRODUCT)  window.location.reload()
+   
   
       } catch (error) {
         toast.error("Ocurrio un error inesperado al guardar el producto!")
@@ -83,6 +92,7 @@ export const useCreateProduct = (products:Product[]) => {
         setForm(initialValues)
         setFileImage(undefined);
       }
+      router.refresh()
     };
   
     const uploadImage = async()=>{
@@ -111,8 +121,17 @@ export const useCreateProduct = (products:Product[]) => {
       return [...headers];
     }, [products]);
   
+
     const isInvalidForm = useCallback(()=>{
       let isInvalid = false
+      if(actionType === ActionType.DELETE_PRODUCT || actionType === ActionType.UPDATE_PRODUCT){
+        if(!form.id.trim()) {
+          isInvalid = true
+          setErrors(prev => ({...prev,id:"Debes seleccionar un producto."}))
+        }
+        return isInvalid
+      }
+
       if(!fileImage && actionType === ActionType.ADD_PRODUCT) {
         isInvalid = true;
         setErrors(prev => ({...prev,imagen:"Debes subir una imagen."}))
@@ -120,7 +139,7 @@ export const useCreateProduct = (products:Product[]) => {
 
 
       for (const [key,value] of Object.entries(form)){
-          if(key !== "descripcion" && key !== "imagen") {
+          if(key !== "descripcion" && key !== "imagen" && key !== "id") {
             if(!value.trim()){
               isInvalid = true
               setErrors(prev => ({...prev,[key]:"Campo requerido."}))
@@ -134,8 +153,8 @@ export const useCreateProduct = (products:Product[]) => {
       const selectedName = e.target.value
     
       const product = products.find((product) => product.nombre === selectedName)!;
-      setErrors({nombre:"",imagen:"",precio:"",tipo:""})
-      setForm({nombre:product.nombre,tipo:product.tipo,imagen:product.imagen,precio:product.precio.toString(),descripcion:product.descripcion})
+      setErrors({nombre:"",imagen:"",precio:"",tipo:"",id:""})
+      setForm({id:product.nombre,nombre:product.nombre,tipo:product.tipo,imagen:product.imagen,precio:product.precio.toString(),descripcion:product.descripcion})
     }
     
     const handleChangeActionType = (e: ChangeEvent<HTMLSelectElement>) => {

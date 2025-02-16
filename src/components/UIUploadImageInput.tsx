@@ -8,10 +8,11 @@ interface Props {
     fileImage?:File;
     imageUrl:string;
     error?:string;
+    disabled?:boolean
 }
 
 
-export const UIUploadImageInput = ({handleChangeFile,isLoading,fileImage,imageUrl,label,error}:Props) => {
+export const UIUploadImageInput = ({handleChangeFile,isLoading,fileImage,imageUrl,label,disabled,error}:Props) => {
   return (
       <div className="w-full flex flex-col justify-start items-start gap-1">
         <label className="text-sm">{label}</label>
@@ -19,8 +20,8 @@ export const UIUploadImageInput = ({handleChangeFile,isLoading,fileImage,imageUr
           <input
               onChange={handleChangeFile}
               type="file"
-              className="w-full h-full opacity-0 absolute cursor-pointer"
-              disabled={isLoading}
+              className="w-full h-full opacity-0 absolute cursor-pointer disabled:cursor-not-allowed"
+              disabled={isLoading || disabled}
             />
             {(!fileImage && !imageUrl) &&(
                 <>

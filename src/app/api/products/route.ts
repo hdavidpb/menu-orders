@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { decrypt } from "@/utils/encriptDecript";
+import { auth } from "../../../../auth";
 
 const EMAIL_KEY = process.env.EMAIL_KEY!
 const URL_SHEETS_API = process.env.URL_API!
@@ -7,13 +7,12 @@ const URL_SHEETS_API = process.env.URL_API!
 
 
 export async function POST (request:Request){
-    const headers = request.headers;
-    const emailAuth = headers.get("authorization")
 
-    const encriptedEmail = decrypt(emailAuth ?? "")
+    const session = await auth()
+    const emailAuth = session?.user?.email
 
 //TODO: Colocar en variable de entorno
-    if(encriptedEmail !== EMAIL_KEY) return NextResponse.json({message:"Usuario no autorizado.",code:401})
+    if(emailAuth !== EMAIL_KEY) return NextResponse.json({message:"Usuario no autorizado.",code:401})
 
     try {
         const body = await request.json()

@@ -20,6 +20,7 @@ export const UISelectedAction = ({value,handleChangeActionType}:Props) => {
             >
               <option value={ActionType.ADD_PRODUCT}>{ActionType.ADD_PRODUCT}</option>
               <option value={ActionType.UPDATE_PRODUCT}>{ActionType.UPDATE_PRODUCT}</option>
+              <option value={ActionType.DELETE_PRODUCT}>{ActionType.DELETE_PRODUCT}</option>
             </select>
           </div>
   )
