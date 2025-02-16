@@ -8,27 +8,32 @@ import { usePathname } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
 export const CartButton = ({ products }: { products: Product[] }) => {
-  const { state } = useContext(ProductContext);
+  const { state ,dispatch} = useContext(ProductContext);
   const [totalProductsInCart, setTotalProductsInCart] = useState(0);
 
   const pathname = usePathname()
 
 
   useEffect(() => {
-    const productsInCart = state.productsInCart;
-    let newCart: IProductsCart = {};
-    for (const productInCartName of Object.keys(state.productsInCart)) {
+    const productsInCart:IProductsCart = JSON.parse(localStorage.getItem("cart") || "{}") ;
+    let newCart: IProductsCart = {...productsInCart};
+    for (const productInCartName of Object.keys(productsInCart)) {
       for (const product of products) {
         if (product.nombre === productInCartName) {
           newCart = {
             ...newCart,
             [productInCartName]: productsInCart[productInCartName],
           };
+          dispatch({type:"LOAD_CART",payload:newCart})
+          localStorage.setItem("cart", JSON.stringify(newCart));
+        }else{
+          delete newCart[productInCartName]
+          dispatch({type:"LOAD_CART",payload:newCart})
           localStorage.setItem("cart", JSON.stringify(newCart));
         }
       }
     }
-  }, [state.productsInCart, products]);
+  }, [ products]);
 
   useEffect(() => {
     const totalProductsInCard = Object.values(state.productsInCart).reduce(
