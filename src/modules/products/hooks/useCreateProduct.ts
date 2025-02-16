@@ -2,18 +2,25 @@
 
 import { Product } from "@/interfaces/interfaces";
 import { encrypt } from "@/utils/encript";
-import { useState, ChangeEvent, FormEvent, useMemo, useCallback } from "react";
+import { useState, ChangeEvent, FormEvent, useMemo, useCallback, useEffect } from "react";
 import toast from "react-hot-toast";
 
 const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUD_NAME
 const PRESET_NAME = process.env.NEXT_PUBLIC_PRESET_NAME
 
+const initialValues = {nombre:"",tipo:"",precio:"",descripcion:"",imagen:""}
+
+export enum ActionType  {
+  "ADD_PRODUCT" = "agreagar producto",
+  "UPDATE_PRODUCT" = "actualizar producto"
+}
 export const useCreateProduct = (products:Product[]) => {
 
-    const [form, setForm] = useState({ nombre: "", tipo: "", precio: "", descripcion: "", });
+    const [form, setForm] = useState(initialValues);
     const [errors, setErrors] = useState({ nombre: "", tipo: "", precio: "", imagen:"" });
     const [isLoading,setLoading] = useState(false)
-    const [fileImage,setFileImage] = useState<File | undefined>(undefined)
+    const [fileImage,setFileImage] = useState<File | undefined>(undefined);
+    const [actionType,setActionType] = useState<ActionType>(ActionType.ADD_PRODUCT)
   
     const handleChange = (
       e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -28,20 +35,26 @@ export const useCreateProduct = (products:Product[]) => {
   
       const file = e.target.files;
       if (!file) return;
+      setForm(prev => ({...prev,imagen:""}))
       setErrors((prev)=> ({...prev,imagen:""}))
       setFileImage(file[0])
     };
   
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+      let data = []
      if( isInvalidForm()) return;
   
       setLoading(true)
+      if(form.imagen){
+        data = [form.nombre,form.tipo,form.imagen,+form.precio,form.descripcion];
+      }else{
+        const imageUrl = await uploadImage()
+        data = [form.nombre,form.tipo,imageUrl,+form.precio,form.descripcion];
+
+      }
   
-      const imageUrl = await uploadImage()
-  
-      const data = [form.nombre,form.tipo,imageUrl,+form.precio,form.descripcion];
-      const body = { data };
+      const body = actionType === ActionType.ADD_PRODUCT ?  { data } : {id:form.nombre,data};
   
       //TODO: email provider auth.js ===>
       const encriptedKey = encrypt("hernan.plazabs@gmail.com");
@@ -52,21 +65,22 @@ export const useCreateProduct = (products:Product[]) => {
           body: JSON.stringify(body),
         });
         const response = await productResponse.json();
-        if( response.code === 200) {
-          toast.success("Producto agregado correctamente.")
+        if( response.status === "success") {
+          toast.success(response.message)
         }else{
           toast.error(response.message)
         }
      
         setLoading(false);
-        setForm({nombre:"",tipo:"",precio:"",descripcion:""})
+        setForm(initialValues)
         setFileImage(undefined);
+       if(actionType === ActionType.UPDATE_PRODUCT)  window.location.reload()
   
       } catch (error) {
         toast.error("Ocurrio un error inesperado al guardar el producto!")
         console.error(error);
         setLoading(false);
-        setForm({nombre:"",tipo:"",precio:"",descripcion:""})
+        setForm(initialValues)
         setFileImage(undefined);
       }
     };
@@ -99,12 +113,14 @@ export const useCreateProduct = (products:Product[]) => {
   
     const isInvalidForm = useCallback(()=>{
       let isInvalid = false
-      if(!fileImage) {
+      if(!fileImage && actionType === ActionType.ADD_PRODUCT) {
         isInvalid = true;
         setErrors(prev => ({...prev,imagen:"Debes subir una imagen."}))
       }
+
+
       for (const [key,value] of Object.entries(form)){
-          if(key !== "descripcion") {
+          if(key !== "descripcion" && key !== "imagen") {
             if(!value.trim()){
               isInvalid = true
               setErrors(prev => ({...prev,[key]:"Campo requerido."}))
@@ -112,16 +128,40 @@ export const useCreateProduct = (products:Product[]) => {
           }
       }
       return isInvalid
-    },[form,fileImage])
+    },[form,fileImage,actionType])
+
+    const handleSelectProductName = (e:ChangeEvent<HTMLSelectElement>)=>{
+      const selectedName = e.target.value
+    
+      const product = products.find((product) => product.nombre === selectedName)!;
+      setErrors({nombre:"",imagen:"",precio:"",tipo:""})
+      setForm({nombre:product.nombre,tipo:product.tipo,imagen:product.imagen,precio:product.precio.toString(),descripcion:product.descripcion})
+    }
+    
+    const handleChangeActionType = (e: ChangeEvent<HTMLSelectElement>) => {
+      setActionType(e.target.value as ActionType);
+      localStorage.setItem("actionType",e.target.value)
+      setForm(initialValues);
+    };
+
+
+    useEffect(()=>{
+        const storageActionType = localStorage.getItem("actionType") as ActionType || ActionType.ADD_PRODUCT ;
+        setActionType(storageActionType)
+    },[])
 
   return {
     form,
     errors,
-    isLoading,
     fileImage,
+    isLoading,
+    actionType,
     productTypes,
+    setForm,
     onSubmit,
     handleChange,
-    handleChangeFile
+    handleChangeFile,
+    handleChangeActionType,
+    handleSelectProductName
 }
 }

@@ -10,11 +10,12 @@ interface Props {
     error?:string;
 }
 
-export const UIInput = ({name,label,handleChange,placeholder,type="text",error}:Props) => {
+export const UIInput = ({name,label,handleChange,placeholder,value,type="text",error}:Props) => {
   return (
     <div className="w-full flex flex-col justify-start items-start gap-1">
       <label className="text-sm">{label}</label>
       <input
+        value={value}
         onChange={(e) => handleChange(e)}
         name={name}
         type={type}

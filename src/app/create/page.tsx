@@ -3,8 +3,8 @@ import { CreateProductForm } from "@/modules/products/components/CreateProductFo
 const generateCatalogo = async () => {
   const URL = process.env.URL_API!;
   const catalogo = await fetch(URL, {
-    cache: "no-cache",
-    next: { revalidate: 60 },
+    cache: "no-store",
+
   })
     .then((response) => {
       return response.json();

@@ -11,11 +11,12 @@ interface Props {
     error?:string;
 }
 
-export const UIInputDataList = ({name,label,handleChange,placeholder,type="text",listData,error}:Props) => {
+export const UIInputDataList = ({name,value,label,handleChange,placeholder,type="text",listData,error}:Props) => {
   return (
     <div className="w-full flex flex-col justify-start items-start gap-1">
       <label className="text-sm">{label}</label>
       <input
+          value={value}
           type={type}
           list={name}
           onChange={handleChange}
