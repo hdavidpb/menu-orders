@@ -12,8 +12,8 @@ const generateCatalogo = async () => {
   const URL = process.env.URL_API!;
   try {
     const response = await fetch(URL, {
-      cache:"no-cache",
-      next: { revalidate: 60 }, // Refresca cada 60 segundos
+      cache:"no-store",
+      // next: { revalidate: 60 }, // Refresca cada 60 segundos
     });
     if (!response.ok) throw new Error("Error al obtener el catálogo");
     const data = await response.json();
