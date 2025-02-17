@@ -18,17 +18,14 @@ const OrderPage = async () => {
   const products = await generateCatalogo();
   
   return (
-    <section className="w-full h-dvh flex flex-col justify-start items-start gap-3 p-4 overflow-y-auto">
-      <div className="w-full md:pt-20">
-        <h1 className="md:mb-10 mb-4 text-center text-2xl font-bold">
-          Tu orden
-        </h1>
-        <div className="mx-auto max-w-5xl justify-center flex flex-col-reverse md:flex-row md:space-x-6 xl:px-0">
-          <OrdersCartContainer products={products}/>
+    <section className="w-full h-dvh flex flex-col justify-start items-center gap-3 p-4 bg-[#e3e4e5] ">
 
+        <h1 className="md:mb-10 mb-4 text-center text-2xl font-medium"> Detalles de tu orden </h1>
+        <div className="mx-auto flex-1 md:max-w-5xl w-full justify-start items-center flex flex-col  xl:px-0 relative">
+          <OrdersCartContainer products={products}/>
           <OrderConfirmTotal products={products}/>
         </div>
-      </div>
+
     </section>
   );
 };

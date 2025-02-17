@@ -21,7 +21,7 @@ const Navbar = async () => {
           <div className="flex justify-center items-center gap-3">
             {session.user?.email === process.env.EMAIL_KEY && (
               <>
-                <Link href="/create" className="px-3 py-2 bg-indigo-500 text-white text-sm rounded-lg" >
+                <Link href="/create" className="px-3 py-2 bg-indigo-500 text-white text-sm rounded-lg hidden md:block" >
                   Administrador
                 </Link>
                 <div className="hidden md:block">

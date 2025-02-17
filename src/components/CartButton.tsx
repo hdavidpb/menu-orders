@@ -19,7 +19,6 @@ export const CartButton = () => {
     let newCart: IProductsCart = {};
     if(state.products.length !==0){
       for (const productKeyName of Object.keys(storageProductsInCart)) {
-        console.log("ENTRO ACA: ",productKeyName)
         for (const product of state.products) {
           if (product.nombre === productKeyName) {
             newCart = {...newCart,[productKeyName]:storageProductsInCart[productKeyName]}

@@ -13,39 +13,28 @@ const {getOrderList} = useGetProductsIncart(products)
 
 
   return (
-    <div className="rounded-lg  md:w-[500px]">
-      {getOrderList.map(( {imagen,nombre,count,precio}) => (
-          <div
-            key={nombre}
-            className="justify-between mb-2 rounded-lg bg-white p-4 shadow-md sm:flex sm:justify-start"
-          >
-            <Image
-              width={200}
-              height={200}
-              priority
-              src={imagen}
-              alt="product-image"
-              className="w-full rounded-lg sm:w-14"
-            />
-            <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
-              <div className="mt-5 sm:mt-0">
-                <h2 className="text-lg font-bold text-gray-900">{nombre}</h2>
+    <div className="rounded-lg  md:w-[520px] w-full mb-9">
+      {getOrderList.map(({ imagen, nombre, count, descripcion, precio }) => (
+        <div
+          key={nombre}
+          className=" w-full bg-white p-3 flex justify-start items-start gap-4 text-gray-900 shadow rounded-lg shadow-gray-300"
+        >
+          <Image width={100} height={100} priority src={imagen} alt="product-image" className="w-14 h-14 rounded-lg" />
+          <div className="flex-1 flex-col justify-start items-start">
+            <h2 className="text-base font-medium">{nombre}</h2>
+            <p className="text-sm">{descripcion}</p>
+            <div className="w-full flex justify-between items-center mt-3">
+              <div className="flex justify-center items-center gap-1 text-lg">
+                <span className=" font-semibold">{count}</span>
+                <p className=" font-semibold">
+                  ${new Intl.NumberFormat("de-De").format(precio * count)}
+                </p>
               </div>
-              <div className="flex justify-center items-center gap-3">
-                <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6 w-full">
-                  <div className="flex flex-row md:flex-col items-center border-gray-100 w-full md:gap-0 gap-5">
-                    <span className="text-xl font-semibold">{count}</span>
-                    <p className="text-lg">
-                      ${new Intl.NumberFormat("de-De").format(precio * count)}
-                    </p>
-                  </div>
-                </div>
-                <RemoveButton name={nombre} />
-              </div>
+              <RemoveButton name={nombre} />
             </div>
           </div>
-        )
-      )}
+        </div>
+      ))}
     </div>
   );
 };

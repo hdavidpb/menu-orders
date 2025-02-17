@@ -10,7 +10,7 @@ interface Props {
   placeholder: string;
   options: string[];
   error?: string;
-  disabled:boolean;
+  disabled?:boolean;
 }
 
 export const UISelect = ({ name, options, label,placeholder,value, error,disabled,handleChange }: Props) => {

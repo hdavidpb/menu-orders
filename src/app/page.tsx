@@ -19,7 +19,7 @@ export default async function Home() {
 
 
   return (
-    <section className="w-full  flex flex-col justify-start items-start gap-3 p-4 overflow-y-auto">
+    <section className="w-full h-full bg-gray-200 flex flex-col justify-start items-start gap-3 p-4 overflow-y-auto">
       <FilterButtons />
       <ProductsContainer products={products} />
     </section>

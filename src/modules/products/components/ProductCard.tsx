@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { AddButton } from "./AddButton";
-import { FavoriteButton } from "./FavoriteButton";
+
 
 interface Props {
   nombre:string;
@@ -13,35 +13,17 @@ interface Props {
 
 export const ProductCard =  ({ nombre,imagen,precio,descripción }: Props) => {
   return (
-    <div className="relative flex w-full max-w-[26rem]  flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg pb-3">
-      <div className="relative mx-4 mt-4 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40">
-        <Image
-          className="object-cover w-full aspect-square"
-          src={imagen}
-          alt="ui/ux review check"
-          width={600}
-          height={600}
-          priority
-        />
-        <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60"></div>
-       <FavoriteButton name={nombre}/>
-
-      </div>
-      <div className="p-6 flex-1">
-        <div className="flex items-center justify-between">
-          <h5 className="capitalize block font-sans text-xl font-medium leading-snug tracking-normal text-blue-gray-900 antialiased">
-            {nombre.toLowerCase()}
-          </h5>
-        </div>
-        <span>${new Intl.NumberFormat("de-DE").format(precio)}</span>
-        <p className="block font-sans text-base font-light leading-relaxed text-gray-700 antialiased">
-       {descripción}
-        </p>
-   
-      </div>
-      <div  className=" flex h-14 flex-col justify-end w-full gap-2 px-2 ">
-        <AddButton name={nombre} image={imagen}  />
-      </div>
+    <div className="bg-white rounded-lg shadow  p-3 flex justify-between items-start w-full gap-2">
+    <div className="flex-1">
+     <h2 className="text-lg font-medium text-gray-700"> {nombre} </h2>
+     <p className="text-sm text-gray-500 mt-1"> {descripción} </p>
+     <div className="flex flex-col justify-between gap-2 items-start mt-3">
+     <p className="text-base font-bold text-gray-800 "> $ {new Intl.NumberFormat("de-DE").format(precio)} </p>
+     <AddButton name={nombre} image={imagen}  />
+     </div>
     </div>
+     <Image src={imagen}  alt="Imagen"  className="w-20 h-20  rounded-lg" height={110} priority  width={110}/>
+   </div>
+
   );
 };

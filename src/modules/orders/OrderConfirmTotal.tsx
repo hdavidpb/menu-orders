@@ -10,19 +10,17 @@ export const OrderConfirmTotal = ({ products }: { products: Product[] }) => {
   const [isOpenForm,setIsopenForm] = useState(false)
 
   return (
-    <div className="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3 ">
-      <OrderForm isOpen={isOpenForm} onClose={() => setIsopenForm(false)} productsInCart={getOrderList} />
-      <div className="flex justify-between text-2xl">
-        <p className="font-bold">Total</p>
-        <div className="">
-          <p className="mb-1 font-bold">
+    <>
+    <OrderForm isOpen={isOpenForm} onClose={() => setIsopenForm(false)} productsInCart={getOrderList} />
+    <div onClick={()=>setIsopenForm(true)} className="mt-6 cursor-pointer rounded-lg border bg-indigo-500 text-white p-4 shadow-md md:mt-0 md:w-1/3 md:static fixed m-auto bottom-0 w-full left-0 md:left-auto flex justify-around hover:opacity-75 transition-opacity">
+        <span>Confirmar orden</span>
+      <div className="flex justify-center items-center gap-2">
+        <p >Subtotal:</p>
+        <p className="font-bold">
             ${new Intl.NumberFormat("de-DE").format(getTotal)}
           </p>
-        </div>
       </div>
-      <button onClick={()=>setIsopenForm(true)} className="mt-6 w-full rounded-md bg-indigo-500 py-3 font-medium text-white hover:bg-blue-600">
-        CONFIRMAR
-      </button>
     </div>
+    </>
   );
 };
