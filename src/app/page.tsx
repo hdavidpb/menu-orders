@@ -5,19 +5,17 @@ import ProductsContainer from "@/modules/products/components/ProductsContainer";
 
 const generateCatalogo = async () => {
   const URL = process.env.URL_API!;
-  const catalogo = await fetch(URL, {
-    cache: "no-cache",
-    next: { revalidate: 60 },
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      const products = createProductsAdapter(data);
-      return products;
+  try {
+    const response = await fetch(URL, {
+      next: { revalidate: 60 }, // Refresca cada 60 segundos
     });
-
-  return catalogo;
+    if (!response.ok) throw new Error("Error al obtener el catálogo");
+    const data = await response.json();
+    return createProductsAdapter(data);
+  } catch (error) {
+    console.error("Error fetching catalog:", error);
+    return [];
+  }
 };
 
 export default async function Home() {
