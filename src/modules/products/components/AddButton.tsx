@@ -18,7 +18,7 @@ useEffect(()=>{
       onClick={handleAddToCart}
       type="button"
     >
-      {state.productsInCart[name] && <span className="text-xs">{state.productsInCart[name].quantity}</span>}
+      {state.productsInCart[name] && <span className="text-xs">+{state.productsInCart[name].quantity}</span>}
       {!state.productsInCart[name] && <span className="text-xs">Agregar</span>}
     </button>
   );

@@ -13,7 +13,8 @@ const {getOrderList} = useGetProductsIncart(products)
 
 
   return (
-    <div className="rounded-lg  md:w-[520px] w-full mb-9">
+    <div className="rounded-lg  md:w-[520px] w-full mb-9 flex flex-col justify-start items-center gap-2">
+      {getOrderList.length !== 0 && (<h1 className="md:mb-10 mb-4 text-center text-2xl font-medium"> Detalles de tu orden </h1>)}
       {getOrderList.map(({ imagen, nombre, count, descripcion, precio }) => (
         <div
           key={nombre}

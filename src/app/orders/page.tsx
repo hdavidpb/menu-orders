@@ -19,8 +19,6 @@ const OrderPage = async () => {
   
   return (
     <section className="w-full h-dvh flex flex-col justify-start items-center gap-3 p-4 bg-[#e3e4e5] ">
-
-        <h1 className="md:mb-10 mb-4 text-center text-2xl font-medium"> Detalles de tu orden </h1>
         <div className="mx-auto flex-1 md:max-w-5xl w-full justify-start items-center flex flex-col  xl:px-0 relative">
           <OrdersCartContainer products={products}/>
           <OrderConfirmTotal products={products}/>
