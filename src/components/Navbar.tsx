@@ -5,6 +5,7 @@ import { SignOutButton } from "./SignOutButton";
 import { auth } from "../../auth";
 import { ProfileSesionButton } from "./ProfileSesionButton";
 
+const EMAIL_KEY = process.env.EMAIL_KEY
 
 const Navbar = async () => {
 
@@ -30,7 +31,7 @@ const Navbar = async () => {
               </>
             )}
             {session && (
-              <ProfileSesionButton urlImage={session.user?.image}/>
+              <ProfileSesionButton urlImage={session.user?.image} showAdminBtn={session.user?.email === EMAIL_KEY}/>
             )}
             
           </div>
