@@ -1,24 +1,22 @@
 
-import { createProductsAdapter } from "@/adapters/adapters";
 import { OrderConfirmTotal } from "@/modules/orders/OrderConfirmTotal";
 import OrdersCartContainer from "@/modules/orders/OrdersCartContainer";
+import { headers } from "next/headers";
+
 const generateCatalogo = async () => {
-  const URL = process.env.URL_API!;
-  try {
-    const response = await fetch(URL, {
+  const headersList = await headers();
+  const BASE_URL = headersList.get("host") ? `http://${headersList.get("host")}` : "http://localhost:3000";
+
+    const response = await fetch(`${BASE_URL}/api/products`, {
       next: { revalidate: 60 }, // Refresca cada 60 segundos
     });
-    if (!response.ok) throw new Error("Error al obtener el catálogo");
     const data = await response.json();
-    return createProductsAdapter(data);
-  } catch (error) {
-    console.error("Error fetching catalog:", error);
-    return [];
-  }
+    return (data.products);
 };
 
 const OrderPage = async () => {
   const products = await generateCatalogo();
+  
   return (
     <section className="w-full h-dvh flex flex-col justify-start items-start gap-3 p-4 overflow-y-auto">
       <div className="w-full md:pt-20">

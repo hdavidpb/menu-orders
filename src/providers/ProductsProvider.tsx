@@ -44,6 +44,14 @@ const ProductsProvider = ({children}:{children:React.ReactNode}) => {
       dispatch({type:"LOAD_CART",payload:storageCart})
     }, []);
 
+    useEffect(()=>{
+
+        fetch("/api/products").then(res => res.json()).then((response)=>{
+          const products= response.products
+          dispatch({type:"GET_SERVER_PRODUCTS",payload:products})
+        })
+    },[])
+
 
   return (
     <ProductContext.Provider value={{state,dispatch}}>

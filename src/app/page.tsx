@@ -1,21 +1,17 @@
-import { createProductsAdapter } from "@/adapters/adapters";
+import { headers } from "next/headers";
 import { FilterButtons } from "@/modules/products/components/FilterButtons";
 import ProductsContainer from "@/modules/products/components/ProductsContainer";
 
 
 const generateCatalogo = async () => {
-  const URL = process.env.URL_API!;
-  try {
-    const response = await fetch(URL, {
+  const headersList = await headers();
+  const BASE_URL = headersList.get("host") ? `http://${headersList.get("host")}` : "http://localhost:3000";
+
+    const response = await fetch(`${BASE_URL}/api/products`, {
       next: { revalidate: 60 }, // Refresca cada 60 segundos
     });
-    if (!response.ok) throw new Error("Error al obtener el catálogo");
     const data = await response.json();
-    return createProductsAdapter(data);
-  } catch (error) {
-    console.error("Error fetching catalog:", error);
-    return [];
-  }
+    return (data.products);
 };
 
 export default async function Home() {

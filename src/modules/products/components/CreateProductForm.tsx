@@ -1,7 +1,6 @@
 "use client";
 
 
-import { Product } from "@/interfaces/interfaces";
 import { UIInput } from "@/components/UIInput";
 import { UITextArea } from "@/components/UITextArea";
 import { UIInputDataList } from "@/components/UIInputDataList";
@@ -13,8 +12,8 @@ import { UISelectedAction } from "./UISelectedAction";
 
 
 
-export const CreateProductForm = ({ products }: { products: Product[] }) => {
-const {form,errors,isLoading,productTypes,fileImage,onSubmit,handleChange,handleChangeFile,handleSelectProductName,handleChangeActionType,actionType} = useCreateProduct(products)
+export const CreateProductForm = () => {
+const {products,form,errors,isLoading,productTypes,fileImage,onSubmit,handleChange,handleChangeFile,handleSelectProductName,handleChangeActionType,actionType} = useCreateProduct()
 
 
 
@@ -36,6 +35,7 @@ const {form,errors,isLoading,productTypes,fileImage,onSubmit,handleChange,handle
           value={form.id}
           placeholder={`Selecciona para ${actionType}`}
           error={errors.id}
+          disabled={isLoading}
         />
       )}
         <UIInput

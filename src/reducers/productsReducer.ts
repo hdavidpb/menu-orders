@@ -29,6 +29,7 @@ export const productReducer = (
       return { ...state, products: action.payload };
     
     case "LOAD_CART":
+      localStorage.setItem("cart",JSON.stringify(action.payload))
       return {...state,productsInCart:action.payload}
     case "ADD_PRODUCT":
       return { ...getProductsAfterToAdd(state, action.payload) };

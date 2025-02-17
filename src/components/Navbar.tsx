@@ -1,42 +1,21 @@
 import Link from "next/link";
 
 import { CartButton } from "./CartButton";
-import { createProductsAdapter } from "@/adapters/adapters";
 import { SignOutButton } from "./SignOutButton";
 import { auth } from "../../auth";
-import Image from "next/image";
+import { ProfileSesionButton } from "./ProfileSesionButton";
 
-const generateCatalogo = async () => {
-  const URL = process.env.URL_API!;
-  try {
-    const response = await fetch(URL, {
-      next: { revalidate: 60 }, // Refresca cada 60 segundos
-    });
-    if (!response.ok) throw new Error("Error al obtener el catálogo");
-    const data = await response.json();
-    return createProductsAdapter(data);
-  } catch (error) {
-    console.error("Error fetching catalog:", error);
-    return [];
-  }
-};
+
 const Navbar = async () => {
-  const products = await generateCatalogo();
+
 
   const session = await auth();
   return (
-    <nav className="w-full flex justify-between items-center p-4 border-b">
-      <Link href="/" className="text-4xl">
-        Menú
-      </Link>
+    <nav className="w-full flex justify-between items-center p-4 border-b relative">
+      <Link href="/" className="text-4xl"> Menú </Link>
       <div className="flex justify-center items-center gap-4">
         {!session && (
-          <Link
-            href="/create"
-            className="underline font-medium text-indigo-500"
-          >
-            Admin
-          </Link>
+          <Link href="/create" className="underline font-medium text-indigo-500" > Login </Link>
         )}
         {session && (
           <div className="flex justify-center items-center gap-3">
@@ -45,21 +24,27 @@ const Navbar = async () => {
                 <Link href="/create" className="px-3 py-2 bg-indigo-500 text-white text-sm rounded-lg" >
                   Administrador
                 </Link>
+                <div className="hidden md:block">
                 <SignOutButton />
+                </div>
               </>
             )}
-            <Image
-              src={session?.user?.image ?? ""}
-              width={300}
-              height={300}
-              className="w-14 h-14 rounded-full shadow shadow-black"
-              alt="foto de perfil"
-            />
+            {session && (
+              <ProfileSesionButton urlImage={session.user?.image}/>
+            )}
+            
           </div>
         )}
-
-        <CartButton products={products} />
+        
+        <CartButton />
+   
       </div>
+      {/* <>
+        <div className="w-4 h-4 bg-white absolute -bottom-[14px] z-20 right-8 rotate-45 border"></div>
+        <div className="rounded-lg bg-white absolute -bottom-[65px] z-50 right-2 shadow p-3 ">
+        <SignOutButton />
+      </div>
+      </> */}
     </nav>
   );
 };
