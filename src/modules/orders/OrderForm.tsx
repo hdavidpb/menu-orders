@@ -11,6 +11,8 @@ interface IForm  {
   address:string;
   description:string;
 }
+
+const PHONE_NUMBER = process.env.NEXT_PUBLIC_PHONE_NUMBER
 const OrderForm = ({isOpen,onClose,productsInCart}:{isOpen:boolean,onClose:VoidFunction,productsInCart:Product[]}) => {
   const [form,setForm] = useState<IForm>({
     paymentMethod:"",
@@ -40,7 +42,7 @@ const OrderForm = ({isOpen,onClose,productsInCart}:{isOpen:boolean,onClose:VoidF
 
   const handleOrder = ()=>   {
     window.open(
-      `https://api.whatsapp.com/send?phone=+3023842288&text=${encodeURIComponent(getOrderText())}`
+      `https://api.whatsapp.com/send?phone=+${PHONE_NUMBER}&text=${encodeURIComponent(getOrderText())}`
     )
     onClose()
   };
