@@ -15,7 +15,7 @@ export const UISelectedAction = ({value,handleChangeActionType}:Props) => {
             </label>
             <select
               value={value}
-              className="border border-indigo-500 bg-white font-medium rounded-lg p-3 outline-indigo-500 capitalize"
+              className="border border-primary bg-white font-medium rounded-lg p-3 outline-primary capitalize"
               onChange={handleChangeActionType}
             >
               <option value={ActionType.ADD_PRODUCT}>{ActionType.ADD_PRODUCT}</option>

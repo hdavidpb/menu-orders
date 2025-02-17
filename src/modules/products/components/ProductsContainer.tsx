@@ -14,13 +14,14 @@ import { ProductContext } from "@/providers/ProductsProvider";
     },[])
 
   return (
-    <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4  gap-3 ">
+    <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4 ">
       {state.products.filter(p => p.tipo.includes(state.filterProduct)).map((product) => (
         <ProductCard
-          key={product.nombre}
+          key={product.nombre + product.tipo}
           nombre={product.nombre}
           precio={product.precio}
           imagen={product.imagen}
+          tipo={product.tipo}
           descripción={product.descripcion}
         />
       ))}

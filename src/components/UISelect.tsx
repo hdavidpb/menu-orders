@@ -26,8 +26,8 @@ export const UISelect = ({ name, options, label,placeholder,value, error,disable
       >
         {options.length === 0 ? <option disabled value="">Aún no hay productos</option> : <option disabled value=""> {placeholder}
         </option>}
-        {options.map((option) => (
-          <option key={option} value={option}>
+        {options.map((option,index) => (
+          <option key={index} value={option}>
             {option}
           </option>
         ))}

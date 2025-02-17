@@ -14,12 +14,12 @@ useEffect(()=>{
 },[state])
   return (
     <button
-      className=" px-3 py-1 border rounded flex justify-center items-center bg-indigo-500 text-white hover:opacity-70 transition-opacity"
+      className="w-[100px] px-3 py-2 border rounded-full flex justify-center items-center bg-primary text-white hover:opacity-70 transition-opacity"
       onClick={handleAddToCart}
       type="button"
     >
-      {state.productsInCart[name] && <span className="text-xs">+{state.productsInCart[name].quantity}</span>}
-      {!state.productsInCart[name] && <span className="text-xs">Agregar</span>}
+      {state.productsInCart[name] && <span className="text-sm">+{state.productsInCart[name].quantity}</span>}
+      {!state.productsInCart[name] && <span className="text-sm">Agregar</span>}
     </button>
   );
 };

@@ -20,7 +20,7 @@ const {getOrderList} = useGetProductsIncart(products)
           key={nombre}
           className=" w-full bg-white p-3 flex justify-start items-start gap-4 text-gray-900 shadow rounded-lg shadow-gray-300"
         >
-          <Image width={100} height={100} priority src={imagen} alt="product-image" className="w-14 h-14 rounded-lg" />
+          {imagen && (<Image width={100} height={100} priority src={imagen} alt="product-image" className="w-14 h-14 rounded-lg" />)}
           <div className="flex-1 flex-col justify-start items-start">
             <h2 className="text-base font-medium">{nombre}</h2>
             <p className="text-sm">{descripcion}</p>

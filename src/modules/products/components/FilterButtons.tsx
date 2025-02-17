@@ -15,11 +15,11 @@ export const FilterButtons = () => {
     dispatch({type:"SELECTED_FILTER",payload:header})
   }
   return (
-    <div className="w-full flex justify-start items-start gap-1 overflow-auto py-3">
+    <div className="w-full flex justify-start items-start gap-1 flex-wrap  py-3">
       {filters.map((header) => (
         <button
           key={header}
-          className={`px-3 py-2 rounded-lg shadow-lg text-sm transition-all ease-in-out duration-400 ${header === state.filterProduct ? "bg-indigo-500 text-white ":"bg-white text-black hover:bg-indigo-300 hover:text-white"}`}
+          className={`px-3 py-2 rounded-lg shadow-lg text-sm transition-all ease-in-out duration-400 ${header === state.filterProduct ? "bg-primary text-white ":"bg-white text-black hover:bg-indigo-300 hover:text-white"}`}
           onClick={()=>handleSelectedFilter(header)}
         >
           {header}
