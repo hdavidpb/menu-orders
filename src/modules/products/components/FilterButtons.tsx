@@ -15,7 +15,7 @@ export const FilterButtons = () => {
     dispatch({type:"SELECTED_FILTER",payload:header})
   }
   return (
-    <div className="w-full flex justify-start items-start gap-1 flex-wrap  py-3">
+    <div className="w-full flex justify-start items-start gap-1 overflow-x-auto  py-3 mb-3">
       {filters.map((header) => (
         <button
           key={header}
