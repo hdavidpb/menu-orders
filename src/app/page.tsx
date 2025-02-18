@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { FilterButtons } from "@/modules/products/components/FilterButtons";
 import ProductsContainer from "@/modules/products/components/ProductsContainer";
+import { DownloadMenu } from "@/modules/products/components/DownloadMenu";
 
 
 const generateCatalogo = async () => {
@@ -22,6 +23,7 @@ export default async function Home() {
     <section className="w-full h-full bg-gray-200 flex flex-col justify-start items-start gap-3 p-4 overflow-y-auto">
       <FilterButtons />
       <ProductsContainer products={products} />
+    <DownloadMenu/>
     </section>
   );
 }

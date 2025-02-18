@@ -21,7 +21,7 @@ export const UISelect = ({ name, options, label,placeholder,value, error,disable
         name={name}
         onChange={handleChange}
         value={value}
-        className={`w-full border p-3  rounded-lg outline-none focus:shadow-gray-400 transition-all ease-in-out duration-300 ${error?"border-red-500":""}`}
+        className={`w-full h-12 p-3 border rounded-lg outline-none focus:shadow-gray-400 transition-all ease-in-out duration-300 ${error?"border-red-500":""}`}
         disabled={disabled}
       >
         {options.length === 0 ? <option disabled value="">Aún no hay productos</option> : <option disabled value=""> {placeholder}
